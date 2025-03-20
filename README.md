@@ -1,1 +1,69 @@
 # Desafio-dio
+def exibir_menu():
+    print("\n=== MENU ===")
+    print("1. Depositar")
+    print("2. Sacar")
+    print("3. Ver Extrato")
+    print("4. Sair")
+    return input("Escolha uma opção: ")
+
+def depositar(saldo, extrato):
+    valor = float(input("Informe o valor para depósito: "))
+    if valor > 0:
+        saldo += valor
+        extrato.append(f"Depósito: R$ {valor:.2f}")
+        print(f"Depósito de R$ {valor:.2f} realizado com sucesso.")
+    else:
+        print("Valor inválido para depósito.")
+    return saldo, extrato
+
+def sacar(saldo, extrato, saques_realizados):
+    valor = float(input("Informe o valor para saque: "))
+    if valor > 0:
+        if saques_realizados >= 3:
+            print("Limite diário de saques atingido.")
+        elif valor > 500:
+            print("Limite máximo por saque é de R$ 500.00.")
+        elif valor > saldo:
+            print("Saldo insuficiente para o saque.")
+        else:
+            saldo -= valor
+            extrato.append(f"Saque: R$ {valor:.2f}")
+            saques_realizados += 1
+            print(f"Saque de R$ {valor:.2f} realizado com sucesso.")
+    else:
+        print("Valor inválido para saque.")
+    return saldo, extrato, saques_realizados
+
+def ver_extrato(saldo, extrato):
+    print("\n=== EXTRATO ===")
+    if not extrato:
+        print("Nenhuma movimentação realizada.")
+    else:
+        for movimento in extrato:
+            print(movimento)
+    print(f"Saldo atual: R$ {saldo:.2f}")
+    print("================")
+
+def main():
+    saldo = 0
+    extrato = []
+    saques_realizados = 0
+
+    while True:
+        opcao = exibir_menu()
+
+        if opcao == "1":
+            saldo, extrato = depositar(saldo, extrato)
+        elif opcao == "2":
+            saldo, extrato, saques_realizados = sacar(saldo, extrato, saques_realizados)
+        elif opcao == "3":
+            ver_extrato(saldo, extrato)
+        elif opcao == "4":
+            print("Saindo do sistema...")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+
+if __name__ == "__main__":
+    main()
